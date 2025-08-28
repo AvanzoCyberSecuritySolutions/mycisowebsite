@@ -136,9 +136,15 @@
                     <a href="contact.html" class="text-gray-600 hover:text-blue-800 transition-colors">Contact</a>
                 </div>
 <a href="https://app.myciso.avanzosolutions.in/#/login" target="_blank">
-<button class="bg-transparent text-black px-6 py-2 rounded-lg font-medium border border-blue-800 hover:bg-gradient-to-r hover:from-[#0039F4] hover:via-[#ED1818] hover:to-[#0E5EC5] hover:text-white">
-  Sign In
-</button>  </a>            
+    <button class="relative bg-transparent text-black px-6 py-2 rounded-lg font-medium border border-blue-800 overflow-hidden transition-colors duration-300 ease-in-out hover:text-white hover:border-transparent group">
+        <!-- Center-expanding background -->
+        <span class="absolute inset-0 bg-gradient-to-r from-[#0039F4] via-[#ED1818] to-[#0E5EC5] transform scale-0 group-hover:scale-100 transition-transform duration-500 ease-out origin-center rounded-lg"></span>
+        
+        <!-- Button text -->
+        <span class="relative z-10">Sign In</span>
+    </button>
+</a>
+           
 
 <button class="md:hidden" onclick="toggleMobileMenu()">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -176,14 +182,59 @@
                 The complete CISO dashboard platform that transforms complex cybersecurity management into streamlined, automated processes.
             </p>
             <div class="space-x-4">
-    <a href="contact.html"><button class="bg-transparent hover:bg-gradient-to-r from-[#0039F4] via-[#ED1818] to-[#0E5EC5] text-blue-800 font-semibold hover:text-white py-4 px-8 border border-blue-800 hover:border-transparent rounded-lg text-lg font-medium">
-  Get Started
-</button></a>                
+    <a href="contact.html" download id="downloadBtnWrapper">
+    <button id="downloadBtn"
+        class="relative overflow-hidden text-blue-800 font-semibold py-4 px-8 border border-blue-800 rounded-lg text-lg font-medium w-48 transition-all duration-300 hover:text-white hover:border-blue-900">
+        <span class="relative z-10">Get Started</span>
+        
+        <!-- Progress bar for click animation -->
+        <span id="progressBar"
+            class="absolute inset-0 bg-gradient-to-r from-[#0039F4] via-[#ED1818] to-[#0E5EC5] w-0 transition-all ease-linear"></span>
+        
+        <!-- Hover animation background -->
+        <span id="hoverBg"
+            class="absolute inset-0 bg-gradient-to-r from-[#0039F4] via-[#ED1818] to-[#0E5EC5] scale-0 transition-transform duration-300 ease-out origin-center rounded-lg"></span>
+    </button>
+</a>
+
+<script>
+    const btn = document.getElementById("downloadBtn");
+    const progressBar = document.getElementById("progressBar");
+    const hoverBg = document.getElementById("hoverBg");
+    const wrapper = document.getElementById("downloadBtnWrapper");
+
+    // Hover animations
+    btn.addEventListener("mouseenter", function() {
+        hoverBg.style.transform = "scale(1)";
+    });
+
+    btn.addEventListener("mouseleave", function() {
+        hoverBg.style.transform = "scale(0)";
+    });
+
+    // Click animation and navigation
+    wrapper.addEventListener("click", function (e) {
+        e.preventDefault(); // prevent immediate navigation
+        progressBar.style.width = "0%";
+        progressBar.style.zIndex = "20"; // Make sure progress bar is on top during animation
+
+        let progress = 0;
+        const interval = setInterval(() => {
+            progress += 10; // increase faster
+            progressBar.style.width = progress + "%";
+
+            if (progress >= 100) {
+                clearInterval(interval);
+                window.location.href = wrapper.getAttribute("href"); // trigger download
+            }
+        }, 40); // faster interval
+    });
+</script>
+            
 <a href="image/MYCISO VIDEO.mp4" target="_blank" onclick="event.preventDefault(); openVideoModal();">     
     <button class="btn-secondary border-2 border-blue-800 text-blue-800 px-8 py-4 rounded-lg font-medium text-lg">View Demo</button> 
 </a>
-
-    <div id="videoModal" class="video-modal">
+<div id="videoModal" class="video-modal">
     <div class="video-modal-content">
         <span class="video-close" onclick="closeVideoModal()">&times;</span>
         <h2 style="margin-bottom: 15px;">MYCISO Video Demo</h2>
@@ -193,11 +244,44 @@
         </video>
     </div>
 </div>
+
+<style>
+.btn-secondary {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    z-index: 1;
+}
+
+.btn-secondary::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(30, 64, 175, 0.2);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+    z-index: -1;
+}
+
+.btn-secondary:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.btn-secondary:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(30, 64, 175, 0.2);
+}
+</style>
+
 <script>
 function openVideoModal() {
     document.getElementById('videoModal').style.display = 'block';
 }
-
 function closeVideoModal() {
     const modal = document.getElementById('videoModal');
     const video = document.getElementById('modalVideo');
@@ -205,23 +289,27 @@ function closeVideoModal() {
     video.pause();
     video.currentTime = 0;
 }
-
 document.getElementById('videoModal').addEventListener('click', function(event) {
     if (event.target === this) closeVideoModal();
 });
-
 document.addEventListener('keydown', function(event) {
     if (event.key === 'Escape' && document.getElementById('videoModal').style.display === 'block') {
         closeVideoModal();
     }
 });       
 </script>
+
 <a href="image/Myciso Brochure.pdf" target="_blank">
-    <button class="bg-transparent hover:bg-gradient-to-r from-[#0039F4] via-[#ED1818] to-[#0E5EC5] text-blue-800 font-medium text-lg hover:text-white px-8 py-4 border border-blue-800 hover:border-transparent rounded-lg">
-    Download Brochure
-</button>
+    <button class="relative bg-transparent text-blue-800 font-medium text-lg px-8 py-4 border border-blue-800 rounded-lg overflow-hidden transition-colors duration-300 ease-in-out hover:text-white hover:border-transparent group">
+        <!-- Center-expanding background -->
+        <span class="absolute inset-0 bg-gradient-to-r from-[#0039F4] via-[#ED1818] to-[#0E5EC5] transform scale-0 group-hover:scale-100 transition-transform duration-500 ease-out origin-center rounded-lg"></span>
+        
+        <!-- Button text -->
+        <span class="relative z-10">Download Brochure</span>
+    </button>
 </a>
-            </div>
+
+        </div>
         </div>
 
         <!-- Stats -->
@@ -253,6 +341,14 @@ document.addEventListener('keydown', function(event) {
     
     <!-- Another Section to Create Scrolling Space -->
     <!-- <section class="py-40"></section> -->
+<section class="py-40 flex justify-center items-center bg-gray-100">
+  <div class="max-w-4xl w-full flex justify-center">
+    <img src="image/2.png" 
+         alt="Sample Image" 
+         class="rounded-2xl shadow-2xl w-full max-w-md object-contain">
+  </div>
+</section>
+
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -525,9 +621,17 @@ document.addEventListener('keydown', function(event) {
             <p class="text-xl mb-8 opacity-90">Join hundreds of organizations who trust MyCISO for their cybersecurity needs</p>
             <div class="space-x-4">
                 <!-- <button class="bg-gradient-to-r from-[#0039F4] via-[#ED1818] to-[#0E5EC5] text-white px-8 py-4 rounded-lg font-medium text-lg hover:bg-gray-100 transition-all hover:scale-105">Start Free Trial</button> -->
-               <a href="contact.html"><button class="border-2 border-white text-white px-8 py-4 rounded-lg font-medium text-lg hover:bg-white hover:text-blue-800 transition-all">Start Free Trial</button></a>
+               <!-- <a href="contact.html"><button class="border-2 border-white text-white px-8 py-4 rounded-lg font-medium text-lg hover:bg-white hover:text-blue-800 transition-all">Start Free Trial</button></a> -->
 
-                <button class="border-2 border-white text-white px-8 py-4 rounded-lg font-medium text-lg hover:bg-white hover:text-blue-800 transition-all">Schedule Demo</button>
+<a href="contact.html">
+    <button class="relative border-2 border-white text-white px-8 py-4 rounded-lg font-medium text-lg overflow-hidden transition-colors duration-300 ease-in-out hover:text-blue-800 hover:border-white group">
+        <!-- Center-expanding background -->
+        <span class="absolute inset-0 bg-white transform scale-0 group-hover:scale-100 transition-transform duration-500 ease-out origin-center rounded-lg"></span>
+        
+        <!-- Button text -->
+        <span class="relative z-10">Schedule Demo</span>
+    </button>
+</a>
             </div>
         </div>
 
